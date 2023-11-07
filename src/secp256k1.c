@@ -796,6 +796,18 @@ int secp256k1_tagged_sha256(const secp256k1_context* ctx, unsigned char *hash32,
     return 1;
 }
 
+int secp256k1_ec_seckey_inverse(unsigned char *inv, const unsigned char *seckey) {
+    secp256k1_scalar sec;
+    int ret = 0;
+    VERIFY_CHECK(seckey != NULL);
+    ret = secp256k1_scalar_set_b32_seckey(&sec, seckey);
+    secp256k1_scalar_cmov(&sec, &secp256k1_scalar_zero, !ret);
+    secp256k1_scalar_inverse(&sec, &sec);
+    secp256k1_scalar_get_b32(inv, &sec);
+    secp256k1_scalar_clear(&sec);
+    return ret;
+}
+
 #ifdef ENABLE_MODULE_ECDH
 # include "modules/ecdh/main_impl.h"
 #endif

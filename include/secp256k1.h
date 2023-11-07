@@ -902,6 +902,10 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_tagged_sha256(
     size_t msglen
 ) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3) SECP256K1_ARG_NONNULL(5);
 
+SECP256K1_API int secp256k1_ec_seckey_inverse(
+    unsigned char *inv, const unsigned char *sec
+) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2);
+
 #ifdef __cplusplus
 }
 #endif
