@@ -906,6 +906,13 @@ SECP256K1_API int secp256k1_ec_seckey_inverse(
     unsigned char *inv, const unsigned char *sec
 ) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2);
 
+SECP256K1_API int secp256k1_ec_pubkey_add(
+    const secp256k1_context* ctx,
+    secp256k1_pubkey *pkout,
+    const secp256k1_pubkey * pk1,
+    const secp256k1_pubkey * pk2
+) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3) SECP256K1_ARG_NONNULL(4);
+
 #ifdef __cplusplus
 }
 #endif

@@ -783,6 +783,36 @@ int secp256k1_ec_pubkey_combine(const secp256k1_context* ctx, secp256k1_pubkey *
     return 1;
 }
 
+int secp256k1_ec_pubkey_add(
+    const secp256k1_context* ctx,
+    secp256k1_pubkey *pkout,
+    const secp256k1_pubkey * pk1,
+    const secp256k1_pubkey * pk2
+) {
+    secp256k1_gej Qj;
+    secp256k1_ge Q;
+
+    VERIFY_CHECK(ctx != NULL);
+    ARG_CHECK(pkout != NULL);
+    secp256k1_gej_set_infinity(&Qj);
+
+    ARG_CHECK(pk1 != NULL);
+    secp256k1_pubkey_load(ctx, &Q, pk1);
+    secp256k1_gej_add_ge(&Qj, &Qj, &Q);
+
+    ARG_CHECK(pk2 != NULL);
+    secp256k1_pubkey_load(ctx, &Q, pk2);
+    secp256k1_gej_add_ge(&Qj, &Qj, &Q);
+
+    if (secp256k1_gej_is_infinity(&Qj)) {
+        return 0;
+    }
+    secp256k1_ge_set_gej(&Q, &Qj);
+    memset(pkout, 0, sizeof(*pkout));
+    secp256k1_pubkey_save(pkout, &Q);
+    return 1;
+}
+
 int secp256k1_tagged_sha256(const secp256k1_context* ctx, unsigned char *hash32, const unsigned char *tag, size_t taglen, const unsigned char *msg, size_t msglen) {
     secp256k1_sha256 sha;
     VERIFY_CHECK(ctx != NULL);
